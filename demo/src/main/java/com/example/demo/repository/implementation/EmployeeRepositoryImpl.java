@@ -65,22 +65,23 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     @Override
     public Employee update(Employee employee) {
         Session session = factory.getCurrentSession();
+        Employee actualEmployee = null;
         try {
             session.beginTransaction();
-            employee = session.get(Employee.class, employee.getId());
-            if (employee != null){
-                employee.setName(employee.getName());
-                employee.setNationalId(employee.getNationalId());
-                employee.setAge(employee.getAge());
-                employee.setBranch(employee.getBranch());
-                session.update(employee);
+            actualEmployee = session.get(Employee.class, employee.getId());
+            if (actualEmployee != null){
+                actualEmployee.setName(employee.getName());
+                actualEmployee.setNationalId(employee.getNationalId());
+                actualEmployee.setAge(employee.getAge());
+                actualEmployee.setBranch(employee.getBranch());
+                session.update(actualEmployee);
             }
             session.getTransaction().commit();
         }
         finally {
             session.close();
         }
-        return employee;
+        return actualEmployee;
     }
 
     @Override

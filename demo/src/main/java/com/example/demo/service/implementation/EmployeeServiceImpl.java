@@ -28,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee addEmployee(Employee employee, int id) {
         int age = validateAgeFromNationalId(employee.getNationalId());
         if (age < 21) {
-            throw new IllegalArgumentException("Employee must be at least 18 years old");
+            throw new IllegalArgumentException("Employee must be at least 21 years old");
         }
         Optional<Branch> branch = branchRepository.getBranch(id);
         employee.setBranch(branch.get());
@@ -46,11 +46,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee updateEmployee(Employee employee) {
-        Optional<Employee> actualEmployee = employeeRepository.findById(employee.getId());
-        if(actualEmployee.isPresent()) {
-            employeeRepository.update(employee);
-        }
-        return null;
+        Optional<Branch> branch = branchRepository.getBranch(employee.getBranch().getId());
+        employee.setBranch(branch.get());
+        return employeeRepository.update(employee);
     }
 
     @Override
